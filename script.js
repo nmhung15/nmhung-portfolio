@@ -1,5 +1,5 @@
 /* ---------------- TYPING EFFECT ---------------- */
-const roles = ["Data Analyst.", "Analytics Engineer.", "Data Scientist."];
+const roles = ["Junior Data Analyst.", "Analytics Engineer.", "Data Scientist."];
 let roleIdx = 0, charIdx = 0, deleting = false;
 const typingEl = document.getElementById("typing");
 
@@ -75,21 +75,7 @@ document.addEventListener("DOMContentLoaded", tick);
   requestAnimationFrame(step);
 })();
 
-const hero = document.querySelector(".hero");
-let particlesStarted = false;
-
-const heroObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting && !particlesStarted) {
-    particlesStarted = true;
-    particles(); // gọi hàm particles()
-  }
-}, { threshold: 0.2 });
-
-if (hero) heroObserver.observe(hero);
-
-
-
-// ==== Back-to-top ====  
+// ==== Back-to-top ====
 const backBtn = document.getElementById("back-to-top");
 if (backBtn) {
   window.addEventListener("scroll", () => {
@@ -105,7 +91,7 @@ if (backBtn) {
   });
 }
 
-// ==== Scroll animations ====  
+// ==== Scroll animations ====
 const scrollEls = document.querySelectorAll('.fade-up, .slide-left, .slide-right');
 
 const scrollObserver = new IntersectionObserver((entries) => {
@@ -115,89 +101,60 @@ const scrollObserver = new IntersectionObserver((entries) => {
       scrollObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.2 });
+}, { threshold: 0.05 });   // thấp hơn để khối cao (3 card xếp dọc trên mobile) vẫn hiện
 
 scrollEls.forEach(el => scrollObserver.observe(el));
 
-/* ---------------- PROJECTS CAROUSEL ---------------- */ 
-document.addEventListener("DOMContentLoaded", function(){ 
-  const el = document.querySelector(".projects-swiper"); 
-  if(!el) return; 
+/* ---------------- PROJECTS CAROUSEL ---------------- */
+document.addEventListener("DOMContentLoaded", function () {
+  const el = document.querySelector(".projects-swiper");
+  if (!el || typeof Swiper === "undefined") return;
 
-  new Swiper(el, { 
-    slidesPerView: 3, 
-    spaceBetween: 22, 
-    navigation: { 
-      nextEl: ".swiper-button-next", 
-      prevEl: ".swiper-button-prev", 
+  new Swiper(el, {
+    slidesPerView: 3,
+    spaceBetween: 22,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
     },
     // Cho phép chọn chữ trong vùng .no-swipe
     noSwiping: true,
     noSwipingClass: 'no-swipe',
     touchStartPreventDefault: false,
 
-    breakpoints: { 
-      0: { slidesPerView: 1 }, 
-      640: { slidesPerView: 2 }, 
-      1024:{ slidesPerView: 3 } 
-    } 
-  }); 
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    }
+  });
 });
 
 // Smooth scroll khi click vào navbar
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', function(e) {
+// Smooth scroll cho mọi link nội bộ (navbar + nút trong hero)
+function scrollToTarget(target) {
+  const OFFSET = 70; // chiều cao navbar
+  const getY = () => target.getBoundingClientRect().top + window.scrollY - OFFSET;
+
+  window.scrollTo({ top: getY(), behavior: "smooth" });
+
+  // Sau khi cuộn xong, ảnh lazy-load có thể đã làm lệch layout → căn lại
+  [900, 1800].forEach(ms => {
+    setTimeout(() => {
+      if (Math.abs(getY() - window.scrollY) > 4) {
+        window.scrollTo({ top: getY(), behavior: "smooth" });
+      }
+    }, ms);
+  });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function (e) {
+    const id = this.getAttribute('href');
+    if (id.length < 2) return;
+    const target = document.querySelector(id);
+    if (!target) return;
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
+    scrollToTarget(target);
   });
 });
-
-
-
-// Scroll spy highlight
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll("nav a");
-
-window.addEventListener("scroll", () => {
-  let current = "";
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 80;
-    const sectionHeight = section.clientHeight;
-    if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-      current = section.getAttribute("id");
-    }
-  });
-
-  navLinks.forEach(link => {
-    link.classList.remove("active");
-    if (link.getAttribute("href") === `#${current}`) {
-      link.classList.add("active");
-    }
-  });
-});
-
-window.addEventListener("load", () => {
-  initCanvasEffect(); 
-});
-
-const menuBtn = document.querySelector(".menu-toggle");
-const navMenu = document.querySelector(".nav-links");
-
-menuBtn.addEventListener("click", () => {
-  navMenu.classList.toggle("active");
-});
-
-document.querySelectorAll(".nav-links a").forEach(link => {
-  link.addEventListener("click", () => {
-    navMenu.classList.remove("active");
-  });
-});
-
-
-
