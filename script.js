@@ -137,15 +137,6 @@ function scrollToTarget(target) {
   const getY = () => target.getBoundingClientRect().top + window.scrollY - OFFSET;
 
   window.scrollTo({ top: getY(), behavior: "smooth" });
-
-  // Sau khi cuộn xong, ảnh lazy-load có thể đã làm lệch layout → căn lại
-  [900, 1800].forEach(ms => {
-    setTimeout(() => {
-      if (Math.abs(getY() - window.scrollY) > 4) {
-        window.scrollTo({ top: getY(), behavior: "smooth" });
-      }
-    }, ms);
-  });
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(link => {
