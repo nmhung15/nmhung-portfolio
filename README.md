@@ -7,9 +7,9 @@ Data Analyst with 1 year of hands-on experience in **SQL**, **Python** and **Pow
 
 **Live website:** [nmhung15.github.io/nmhung-portfolio](https://nmhung15.github.io/nmhung-portfolio/)
 
-## Vercel Speed Insights
+## Vercel Analytics and Speed Insights
 
-Speed Insights is configured in `index.html`. To collect metrics, deploy this site to Vercel and enable Speed Insights for the project in the Vercel dashboard. The GitHub Pages deployment does not collect Vercel Speed Insights data.
+Web Analytics and Speed Insights scripts are configured in `index.html`. To collect metrics, enable both products for the project in the Vercel dashboard and deploy the site to Vercel. GitHub Pages does not collect Vercel Analytics or Speed Insights data.
 
 ## Deploying with Vercel
 
